@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <title>quiz</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" type="text/css" href="../quiz/common/quiz.css">
+  <script type="text/javascript" src="../quiz/common/quiz.js" defer></script></head>
+
+<body>
+
+  <div class="main">
+    <header>
+      <div id="quiz_title"><img src="img/quiz_title.png" alt="정리하기"></div>
+      <div id="tit_name"><img src="img/tit_name.png" alt="과정명"></div>
+    </header>
+
+    <!-- 시작화면 -->
+    <section data-page="start" style="display: block;">
+      <button class="start_btn"></button>
+    </section>
+
+    <!-- 퀴즈 -->
+    <section data-page="quiz">
+
+      <!-- 문제1-->
+      <div class="quiz" 
+      data-quiz='{ "type": "선다형", "answer": "4", "attempts": 2 }'>
+
+        <div class="quiz_wrap">
+          <div class="question">
+            <div edit><span class="not">올바른</span> 것은?</div>
+          </div>
+
+          <!-- <div class="sub_question" edit>
+            sub
+          </div> -->
+
+          <ul class="selection basic">
+            <li><button class="select" data-choice="1">1번문제</button></li>
+            <li><button class="select" data-choice="2">2번문제</button></li>
+            <li><button class="select" data-choice="3">3번문제</button></li>
+            <li><button class="select" data-choice="4">4번문제</button></li>
+          </ul>
+
+
+          <div class="btn_wrap">
+            <button class="confirm" title="정답확인"></button>
+          </div>
+        </div>
+
+        <!-- 모달창 -->
+        <div class="modal" style="display: none;">
+          <img src="../quiz/common/img/alert_retry.png" alt="다시 풀어보세요.">
+        </div>
+
+        <div class="commentary_wrap">
+          <table class="com">
+            <tr class="top">
+              <td edit>정답 :</td>
+              <td>
+                <div class="dap">4</div>
+              </td>
+            </tr>
+            <tr class="bottom">
+              <td edit>해설 :</td>
+              <td>
+                <div class="comment" edit>
+                  해설입니다.1
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="nav_wrap">
+          <button class="nav next" title="다음 문제"></button>
+          <button class="nav result" title="결과 보기"></button>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- 결과페이지 -->
+    <section data-page="result" data-btn="true">
+      <div class="result_wrap">
+        <div class="score">
+          <span edit="">총</span>
+          <span class="totalQnum"></span>
+          <span edit="">문제 중</span>
+          <span class="focus_color"><span class="score_num">0</span></span>
+          <span edit="">문제</span>
+          <span edit="">를 맞히셨습니다.</span>
+        </div>
+
+        <table>
+          <tbody>
+            <tr class="q_num">
+              <th>
+                <div class="num"></div>
+              </th>
+              <th>
+                <div class="num"></div>
+              </th>
+              <th>
+                <div class="num"></div>
+              </th>
+              <th>
+                <div class="num"></div>
+              </th>
+              <th>
+                <div class="num"></div>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+        <table class="table_q_res">
+          <tbody>
+            <tr class="q_res">
+              <td>
+                <div class="res false"><button class="retry" title="틀린문제 풀기"></button></div>
+              </td>
+              <td>
+                <div class="res true"><button class="retry" title="틀린문제 풀기"></button></div>
+              </td>
+              <td>
+                <div class="res false"><button class="retry" title="틀린문제 풀기"></button></div>
+              </td>
+              <td>
+                <div class="res false"><button class="retry" title="틀린문제 풀기"></button></div>
+              </td>
+              <td>
+                <div class="res false"><button class="retry" title="틀린문제 풀기"></button></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="retry" edit="">
+          문제를 다시 한번 풀어보려면 다시 풀기 버튼을 클릭하세요.
+        </div>
+        <button class="retryAll" title="다시풀기"></button>
+      </div>
+
+    </section>
+
+  </div>
+
+</body>
+
+
+</html>
