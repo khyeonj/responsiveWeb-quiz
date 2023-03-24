@@ -282,7 +282,7 @@ header {
 
   /*================ 선다형 ================*/
   .quiz ul.selection.basic {
-    margin: 10px 80px 8.8% 175px;
+    margin: 10px 80px 75px 175px;
     min-height: 175px;
   }
 
