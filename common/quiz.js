@@ -31,7 +31,6 @@ resultBtn.addEventListener("click", function () {
   resultPage.style.display = "block";
 });
 
-
 //내가 선택한 답 체크
 let buttons = document.querySelectorAll('.select');
 
@@ -44,51 +43,68 @@ buttons.forEach(button => {
   });
 });
 
-//선다형 정답체크 
-//내가 선택한 답 = 정답이면 .true, 아니면 .false
-let quizData = JSON.parse(quiz.dataset.quiz);
-let mTryNum = quizData.attempts;
-let usetTryNum = 1;
-let coAns = document.querySelector(`button[data-choice="${quizData.answer}"]`);
-console.log(quizData);
 
-confirmBtn.addEventListener("click", function(){
-  let checkedAns = document.querySelector('.checked')
-  console.log(checkedAns);
-
-  //정답 선택하지 않았을 때
-  if(!checkedAns){
-    return;
+//선다형, ox class 정답체크
+class ChoiceQuiz{
+  constructor(type,attempts){
+    this.type=type
+    this.attempts=attempts
   }
 
-  let choice = checkedAns.dataset.choice;
+  confirmCheck(){ 
+    //내가 선택한 답 = 정답이면 .true, 아니면 .false
+    let quizData = JSON.parse(quiz.dataset.quiz);
+    let mTryNum = quizData.attempts;
+    let usetTryNum = 1;
+    let coAns = document.querySelector(`button[data-choice="${quizData.answer}"]`);
 
-  console.log(usetTryNum);
-  console.log(mTryNum);
-  console.log(choice);
+    confirmBtn.addEventListener("click", function(){
+      let checkedAns = document.querySelector('.checked')
+      console.log(checkedAns);
 
-  let quizElement = confirmBtn.closest('.quiz');
+      //정답 선택하지 않았을 때
+      if(!checkedAns){
+        return;
+        //모달창 및 오디오 필요
+      }
 
-  if(choice == quizData.answer){//정답일때-------------
-    quizElement.classList.remove('false');
-    quizElement.classList.add('true');
-    quiz.classList.add('finished');
-    confirmBtn.style.display = 'none';
-    //정답에 true 추가
-    coAns.classList.add('true');
-    //모달창 - 정답입니다.
+      let choice = checkedAns.dataset.choice;
 
-  }else if(choice !== quizData.answer){//정답 틀렸을 때-------------
-    checkedAns.classList.remove('checked');
-    if(usetTryNum == mTryNum){
-      //사용자 시도횟수 없는 경우
-      quizElement.classList.add('false');
-      quiz.classList.add('finished');
-      confirmBtn.style.display = 'none';
-      //정답에 true 추가
-      coAns.classList.add('true');
-    }
-    usetTryNum++;
+      console.log(usetTryNum);
+      console.log(mTryNum);
+      console.log(choice);
+
+      let quizElement = confirmBtn.closest('.quiz');
+
+      if(choice == quizData.answer){//정답일때-------------
+        quizElement.classList.remove('false');
+        quizElement.classList.add('true');
+        quiz.classList.add('finished');
+        confirmBtn.style.display = 'none';
+        //정답에 true 추가
+        coAns.classList.add('true');
+
+      }else if(choice !== quizData.answer){//정답 틀렸을 때-------------
+        checkedAns.classList.remove('checked');
+        if(usetTryNum == mTryNum){
+          //사용자 시도횟수 없는 경우
+          quizElement.classList.add('false');
+          quiz.classList.add('finished');
+          confirmBtn.style.display = 'none';
+          //정답에 true 추가
+          coAns.classList.add('true');
+        }
+        usetTryNum++;
+      }
+        
+    });
   }
-    
-});
+}
+
+let cQuiz = new ChoiceQuiz("선다형", "2")
+cQuiz.confirmCheck();
+
+let oxQuiz = new ChoiceQuiz("ox형", "1")
+oxQuiz.confirmCheck();
+
+
