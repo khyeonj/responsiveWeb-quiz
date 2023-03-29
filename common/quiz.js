@@ -45,16 +45,18 @@ buttons.forEach(button => {
 
 
 //선다형, ox class 정답체크
+let quizData = JSON.parse(quiz.dataset.quiz);
+
 class ChoiceQuiz{
-  constructor(type,attempts){
-    this.type=type
-    this.attempts=attempts
+  constructor(tryNum){
+    // this.type=type
+    this.tryNum=tryNum;
   }
 
   confirmCheck(){ 
     //내가 선택한 답 = 정답이면 .true, 아니면 .false
-    let quizData = JSON.parse(quiz.dataset.quiz);
-    let mTryNum = quizData.attempts;
+    let mTryNum = this.tryNum;
+    console.log(mTryNum);
     let usetTryNum = 1;
     let coAns = document.querySelector(`button[data-choice="${quizData.answer}"]`);
 
@@ -71,7 +73,6 @@ class ChoiceQuiz{
       let choice = checkedAns.dataset.choice;
 
       console.log(usetTryNum);
-      console.log(mTryNum);
       console.log(choice);
 
       let quizElement = confirmBtn.closest('.quiz');
@@ -96,15 +97,23 @@ class ChoiceQuiz{
         }
         usetTryNum++;
       }
-        
     });
   }
 }
 
-let cQuiz = new ChoiceQuiz("선다형", "2")
-cQuiz.confirmCheck();
+console.log(quizData.type);
 
-let oxQuiz = new ChoiceQuiz("ox형", "1")
-oxQuiz.confirmCheck();
+//선다형, ox형 tryNum(시도횟수) 설정
+if(quizData.type=="선다형"){
+  let cQuiz = new ChoiceQuiz("2");
+  cQuiz.confirmCheck();
+}else if(quizData.type=="ox형"){
+  let oxQuiz = new ChoiceQuiz("1");
+  oxQuiz.confirmCheck();
+}
+
+
+
+
 
 
