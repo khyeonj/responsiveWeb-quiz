@@ -8,8 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" type="text/css" href="../quiz/common/quiz.css">
-  <script type="text/javascript" src="../quiz/common/quiz.js" defer></script></head>
-
+  <script type="text/javascript" src="../quiz/common/mainEn.js" defer></script>
+  <script type="text/javascript" src="../quiz/common/quiz.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded",_=>{
+      MainQEn.Init();
+      
+    })
+  </script>
+</head>
 <body>
 
   <div class="main">
@@ -28,7 +35,7 @@
 
       <!-- 문제1-->
       <div class="quiz" 
-      data-quiz='{ "type": "선다형", "answer": "4", "attempts": 2 }'>
+      data-quiz='{ "type": "선다형", "answer": "4", "tryNum": "2"}'>
 
         <div class="quiz_wrap">
           <div class="question">
