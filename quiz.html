@@ -35,7 +35,7 @@
 
       <!-- 문제1-->
       <div class="quiz" 
-      data-quiz='{ "type": "선다형", "answer": "4", "tryNum": "2"}'>
+      data-quiz='{ "type": "선다형", "answer": "1", "tryNum": "2"}' style="display: block;">
 
         <div class="quiz_wrap">
           <div class="question">
@@ -71,7 +71,61 @@
               <td edit>해설 :</td>
               <td>
                 <div class="comment" edit>
-                  해설입니다.1
+                  해설입니다.11111
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="nav_wrap">
+          <button class="nav next" title="다음 문제"></button>
+          <button class="nav result" title="결과 보기"></button>
+        </div>
+
+      </div>
+
+      <!-- 문제2-->
+      <div class="quiz" 
+      data-quiz='{ "type": "ox형", "answer": "O", "tryNum": 1 }'>
+
+        <div class="quiz_wrap">
+          <div class="question">
+            <div edit>다음의 설명이 맞으면 O, 틀리면 X를 선택하시오.</div>
+          </div>
+
+          <div class="sub_question">
+            보조 지문
+          </div>
+          
+          <ul class="selection ox" data-index="0" >
+            <li><button data-choice="O" class="select o"></button></li>
+            <li><button data-choice="X" class="select x"></button></li>
+          </ul>
+
+          <div class="btn_wrap">
+            <button class="confirm" title="정답확인"></button>
+          </div>
+        </div>
+
+        <!-- 모달창 -->
+        <div class="modal" style="display: none;">
+          <img src="../quiz/common/img/alert_retry.png" alt="다시 풀어보세요.">
+        </div>
+
+        <div class="commentary_wrap" >
+          <table class="com">
+            <tr class="top">
+              <td edit>정답 :</td>
+              <td>
+                <div class="dap">O</div>
+              </td>
+            </tr>
+            <tr class="bottom">
+              <td edit>해설 :</td>
+              <td>
+                <div class="comment" edit>
+                  해설입니다.22222
                 </div>
               </td>
             </tr>
