@@ -1,51 +1,59 @@
-
-//선다형 내가 선택한 답 체크 (전부 밑에 CONST 안에 하나로 만들어야함.)
-/* let buttons = document.querySelectorAll('.select');
-
-buttons.forEach(button => {
-  button.addEventListener('click', function () {
-    buttons.forEach(b => {
-      if (b !== button) b.classList.remove('checked');
-    });
-    this.classList.toggle('checked');
-  });
-});
-
-*/
-
 //선다형, ox class 정답체크
-// let quizData = JSON.parse(quiz.dataset.quiz); 
 const AraQuiz={
   
   ChoiceQuiz:class {
     
-    constructor(answer,tryNum){
-      // this.type=type;
-      this.answer=answer;
-      this.tryNum=tryNum;
+    //q=warp
+    constructor(wrap){
+      this.warp=wrap;
+      console.log(wrap)
+      // console.log(wrap.dataset.quiz)
+      console.log(JSON.parse(wrap.dataset.quiz))
+      // console.log(JSON.parse(wrap.dataset.quiz).answer)
     }
   
     confirmCheck(){ 
+
+      //선다형 내가 선택한 답 체크 
+      let buttons = document.querySelectorAll('.select');
+      buttons.forEach(button => {
+        button.addEventListener('click', function () {
+          buttons.forEach(b => {
+            if (b !== button) b.classList.remove('checked');
+          });
+          this.classList.toggle('checked');
+        });
+      }); 
       
+
       //내가 선택한 답 = 정답이면 .true, 아니면 .false
-      let mTryNum = this.tryNum;
+      let mTryNum = JSON.parse(this.warp.dataset.quiz).tryNum;
       console.log(mTryNum);
-      let usetTryNum = 1;
-      let coAns = document.querySelector(`button[data-choice="${quizData.answer}"]`);
-  
+      let quizDataAns = JSON.parse(this.warp.dataset.quiz).answer;
+      console.log(quizDataAns); 
+
+      let userTryNum = 1;
+      let coAns = document.querySelector(`button[data-choice="${quizDataAns}"]`);
+      console.log(coAns); 
+
+      let nextBtn = document.querySelectorAll(".next");
+      let retryBtn = document.querySelector(".retryAll");
+      let confirmBtn = document.querySelector('.confirm'); 
+
       confirmBtn.addEventListener("click", function(){
         let checkedAns = document.querySelector('.checked')
         console.log(checkedAns);
   
         //정답 선택하지 않았을 때
         if(!checkedAns){
-          return;
+          // return;
           //모달창 및 오디오 필요
+          console.log(noooo);
         }
   
         let choice = checkedAns.dataset.choice;
   
-        console.log(usetTryNum);
+        console.log(userTryNum);
         console.log(choice);
   
         let quizElement = confirmBtn.closest('.quiz');
@@ -60,7 +68,7 @@ const AraQuiz={
   
         }else if(choice !== quizData.answer){//정답 틀렸을 때-------------
           checkedAns.classList.remove('checked');
-          if(usetTryNum == mTryNum){
+          if(userTryNum == mTryNum){
             //사용자 시도횟수 없는 경우
             quizElement.classList.add('false');
             quiz.classList.add('finished');
@@ -68,7 +76,7 @@ const AraQuiz={
             //정답에 true 추가
             coAns.classList.add('true');
           }
-          usetTryNum++;
+          userTryNum++;
         }
       });
     }
