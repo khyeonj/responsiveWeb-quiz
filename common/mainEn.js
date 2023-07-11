@@ -48,16 +48,6 @@ const MainQEn={
     
     
 
-    //선다형, ox형 모듈 불러오기
-
-    // let quizData = JSON.parse(quiz.dataset.quiz);      
-    // console.log(AraQuiz);
-    // console.log(quizData);
-    // console.log(quizData.answer);
-    
-    // AraQuiz;
-
-
   }
 }
 
