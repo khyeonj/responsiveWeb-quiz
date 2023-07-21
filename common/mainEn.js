@@ -5,7 +5,7 @@ const MainQEn={
   Init(){//인스턴스화
     let main = document.querySelector(".main");
     let startBtn = document.querySelector(".start_btn");
-    let resultBtn = document.querySelector(".result");
+    let resultBtn = document.querySelectorAll(".result");
     let retryBtn = document.querySelector(".retryAll");
     
     let startPage = document.querySelector("section[data-page='start']");
@@ -19,27 +19,33 @@ const MainQEn={
     });
     
     //result버튼 클릭시 result페이지 
-    resultBtn.addEventListener("click", function () {
-      quizPage.style.display = "none";
-      resultPage.style.display = "block";
+    resultBtn.forEach(r=>{  
+      r.addEventListener("click", function () {
+        quizPage.style.display = "none";
+        resultPage.style.display = "block";
+      });
+    })
+
+    //retry버튼 클릭 시ㅣ
+    retryBtn.addEventListener("click", function () {
+      quizPage.style.display = "block";
+      resultPage.style.display = "none";
+      //quiz.finished 제거
     });
     
     let quizDoms = document.querySelectorAll(".quiz");
+    quizDoms[0].style.display="block"
     console.log(quizDoms)
     
     quizDoms.forEach((q,i)=>{
-      if(JSON.parse(q.dataset.quiz).type=="선다형" || JSON.parse(q.dataset.quiz).type=="ox형"){
-        let cQuiz = new AraQuiz.ChoiceQuiz(q,{
-          nextHandler:this.NextQuiz.bind(this),
-          qnum:i+1,
-          totalQnum:quizDoms.length
-        });  
-        //quizs에 cQuiz를 집어넣어 배열로 만들어 사용
-        this.quizs.push(cQuiz);
-      };
-
+      let cQuiz = new AraQuiz.ConfirmQuiz(q,{
+        nextHandler:this.NextQuiz.bind(this),
+        qnum:i+1,
+        totalQnum:quizDoms.length
+      });  
+      //quizs에 cQuiz를 집어넣어 배열로 만들어 사용
+      this.quizs.push(cQuiz);
     });
-
 
     //총 문제 수(문제에 번호를 매겨서 알아서 총 갯수와 비교할 수 있도록)
     // let totalQnum = document.querySelector(".totalQnum");
@@ -53,8 +59,6 @@ const MainQEn={
     this.nowQnum++;
     console.log("nextQuiz")
     this.quizs[this.nowQnum-1].show();
-
-
   }
 }
 
