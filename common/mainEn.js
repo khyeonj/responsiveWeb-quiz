@@ -6,7 +6,7 @@ const MainQEn={
     let main = document.querySelector(".main");
     let startBtn = document.querySelector(".start_btn");
     let resultBtn = document.querySelectorAll(".result");
-    let retryBtn = document.querySelector(".retryAll");
+    let retryAllBtn = document.querySelector(".retryAll");
     
     let startPage = document.querySelector("section[data-page='start']");
     let quizPage = document.querySelector("section[data-page='quiz']");
@@ -17,26 +17,11 @@ const MainQEn={
       startPage.style.display = "none";
       quizPage.style.display = "block";
     });
-    
-    //result버튼 클릭시 result페이지 
-    resultBtn.forEach(r=>{  
-      r.addEventListener("click", function () {
-        quizPage.style.display = "none";
-        resultPage.style.display = "block";
-      });
-    })
 
-    //retry버튼 클릭 시ㅣ
-    retryBtn.addEventListener("click", function () {
-      quizPage.style.display = "block";
-      resultPage.style.display = "none";
-      //quiz.finished 제거
-    });
-    
+     //퀴즈 
     let quizDoms = document.querySelectorAll(".quiz");
     quizDoms[0].style.display="block"
-    console.log(quizDoms)
-    
+   
     quizDoms.forEach((q,i)=>{
       let cQuiz = new AraQuiz.ConfirmQuiz(q,{
         nextHandler:this.NextQuiz.bind(this),
@@ -46,6 +31,37 @@ const MainQEn={
       //quizs에 cQuiz를 집어넣어 배열로 만들어 사용
       this.quizs.push(cQuiz);
     });
+
+    //result 
+    resultBtn.forEach((r,d)=>{  
+      r.addEventListener("click", function () {
+        //result버튼 클릭시 result페이지 
+        quizPage.style.display = "none";
+        resultPage.style.display = "block";
+      });
+    })
+
+    //retryAll버튼 클릭 시
+    retryAllBtn.addEventListener("click",()=>{
+      quizPage.style.display = "block";
+      resultPage.style.display = "none";
+      //quiz.finished 제거
+      main.classList.remove('finished');
+      this.nowQnum = 1;
+      quizDoms.forEach((a,i)=>{
+        console.log(a);
+        let rQuiz = new AraQuiz.ResetQuiz(a);
+      });
+      quizDoms[0].style.display="block"
+    });
+
+
+    let numQnum = document.querySelectorAll('.num');
+    let retryQres = document.querySelectorAll('.retry');
+    
+    if(main.classList.contains('finished')){
+      console.log('aaaaaaaaaaaaaaa');
+    };
 
     //총 문제 수(문제에 번호를 매겨서 알아서 총 갯수와 비교할 수 있도록)
     // let totalQnum = document.querySelector(".totalQnum");
@@ -59,6 +75,9 @@ const MainQEn={
     this.nowQnum++;
     console.log("nextQuiz")
     this.quizs[this.nowQnum-1].show();
+  },
+  resultTableTrueCheck(){    
+
   }
 }
 
