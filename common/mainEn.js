@@ -33,7 +33,7 @@ const MainQEn={
     });
 
     //result 
-    resultBtn.forEach((r,d)=>{  
+    resultBtn.forEach(r=>{  
       r.addEventListener("click", function () {
         //result버튼 클릭시 result페이지 
         quizPage.style.display = "none";
@@ -55,10 +55,7 @@ const MainQEn={
       quizDoms[0].style.display="block"
     });
 
-
-    let numQnum = document.querySelectorAll('.num');
-    let retryQres = document.querySelectorAll('.retry');
-    
+   
     if(main.classList.contains('finished')){
       console.log('aaaaaaaaaaaaaaa');
     };

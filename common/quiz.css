@@ -784,13 +784,16 @@ header {
   section[data-page="result"] td .res {
     position: relative;
     display: inline-block;
-    background: url(./img/result_ox2.png) no-repeat 4px 0px;
+    background: url(./img/result_ox2.png) no-repeat 0px 0px;
     overflow: visible;
     margin-left: 1px;
-    width: 82px;
-    height: 192px;
+    width: 76px;
+    height: 71px;
     top: 80px;
     left: 0px;
+  }
+  section[data-page="result"] td .res.false{
+    background-position: -76px 0;
   }
 
   section[data-page="result"] td .res button.retry {
