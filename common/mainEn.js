@@ -1,3 +1,44 @@
+const ResultControl={
+  plusResultHTMLtag(){
+    let resultQnum = document.querySelector('.q_num'); 
+    let th = document.createElement('th');
+    th.innerHTML = '<div class="num"></div>';
+    resultQnum.appendChild(th);
+    
+    let resultQres = document.querySelector('.q_res');
+    let index = resultQnum.querySelectorAll("th").length - 1;
+    let td = document.createElement('td');
+    td.innerHTML = '<div class="res"><button class="retry" title="틀린문제 풀기" index="'+index+'"></button></div>';
+    resultQres.appendChild(td);
+
+    td.querySelector("button").addEventListener("click", function(){
+      let num = parseInt(this.getAttribute("index"), 10);
+      console.log(this);
+
+      for(i = 0; i<nowQnum; ++i){
+        if(i == num){
+
+        }else{
+
+        }
+      }
+    });
+  },
+  quizResultCheck(){
+    MainQEn.quizs.forEach(q=>{  
+      console.log(q)
+      // 퀴즈가 true를 가지고 있다면
+      if(q.classList.contains('true')){
+        // retryQres[MainQEn.nowQnum-1].classList.add('true');
+        console.log('trure')
+      }else if(q.classList.contains('false')){
+        // retryQres[MainQEn.nowQnum-1].classList.add('false');
+        console.log('falseeee')
+      }
+    })
+  }
+}
+
 const MainQEn={
   nowQnum:1,
   quizs:[],
@@ -30,12 +71,16 @@ const MainQEn={
       });  
       //quizs에 cQuiz를 집어넣어 배열로 만들어 사용
       this.quizs.push(cQuiz);
+
     });
 
     //result 
     resultBtn.forEach(r=>{  
+      ResultControl.plusResultHTMLtag();
       r.addEventListener("click", function () {
         //result버튼 클릭시 result페이지 
+        //함수 호출
+        ResultControl.quizResultCheck();
         quizPage.style.display = "none";
         resultPage.style.display = "block";
       });
@@ -55,10 +100,6 @@ const MainQEn={
       quizDoms[0].style.display="block"
     });
 
-   
-    if(main.classList.contains('finished')){
-      console.log('aaaaaaaaaaaaaaa');
-    };
 
     //총 문제 수(문제에 번호를 매겨서 알아서 총 갯수와 비교할 수 있도록)
     // let totalQnum = document.querySelector(".totalQnum");
@@ -73,8 +114,8 @@ const MainQEn={
     console.log("nextQuiz")
     this.quizs[this.nowQnum-1].show();
   },
-  resultTableTrueCheck(){    
-
+  resultTablePlus(){    
+    
   }
 }
 

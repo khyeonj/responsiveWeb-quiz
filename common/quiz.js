@@ -1,6 +1,5 @@
-//선다형, ox class 정답체크
+//정답체크
 const AraQuiz={
-  
   ConfirmQuiz:class {
     //한번만 사용할 ㄸㅐ는 class사용 x, const로 선언 후 작성
     constructor(wrap, {nextHandler, qnum, totalQnum}){
@@ -8,8 +7,6 @@ const AraQuiz={
       this.nextHandler = nextHandler;
       this.qnum = qnum;
       this.totalQnum = totalQnum;
-
-      console.log(this.qnum);
 
       this.myAnswer = 0;
       this.buttons = this.wrap.querySelectorAll(".select");
@@ -24,11 +21,8 @@ const AraQuiz={
 
       this.init();
     }
-    
 
-    init(){ 
-      this.plusResultHTMLtag();
-      
+    init(){       
       //선다형 내가 선택한 답 체크 메소드 불러오기
       this.buttons.forEach(b=>{
         b.addEventListener('click',_=>{
@@ -51,9 +45,9 @@ const AraQuiz={
       this.nextBtn.addEventListener("click",()=>{
         //nextBtn 클릭 시 핸들러 발생 전 할 행동이 있을 경우 함수로 호출 후 행동코드 입력
         this.nextHandler();
+        // this.resultCheck();
       });
-
-      this.retryQres = document.querySelectorAll('.res');
+      
     }
 
     //선다형 내가 선택한 답 체크 메소드
@@ -83,7 +77,6 @@ const AraQuiz={
           this.quizElement.classList.remove('false');
           this.quizElement.classList.add('true');
           this.quizElement.classList.add('finished');
-          this.retryQres[this.qnum-1].classList.add('true');
           this.confirmBtn.style.display = 'none';
           //정답에 true 추가
           this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
@@ -95,12 +88,14 @@ const AraQuiz={
             //사용자 시도횟수 없는 경우
             this.quizElement.classList.add('false');
             this.quizElement.classList.add('finished');
-            this.retryQres[this.qnum-1].classList.add('false');
             this.confirmBtn.style.display = 'none';
             //정답에 true 추가
             this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
           }
           this.userTryNum++;
+          if(this.userTryNum > this.maxTryNum){
+            this.userTryNum = 1;
+          }
         }
 
         //결과보기 버튼
@@ -121,19 +116,22 @@ const AraQuiz={
         this.quizElement.classList.remove('false');
         this.quizElement.classList.add('true');
         this.quizElement.classList.add('finished');
-        this.retryQres[this.qnum-1].classList.add('true');
         this.confirmBtn.style.display = 'none';
       }else if(this.writeAns !== this.answer){//정답 틀렸을 때-------------
         console.log('답 틀림');
         this.wrap.querySelector(`input`).value="";
+        console.log(this.userTryNum);
+        console.log(this.maxTryNum);
         if(this.userTryNum == this.maxTryNum){
           //사용자 시도횟수 없는 경우
           this.quizElement.classList.add('false');
           this.quizElement.classList.add('finished');
-          this.retryQres[this.qnum-1].classList.add('false');
           this.confirmBtn.style.display = 'none';
         }
         this.userTryNum++;
+        if(this.userTryNum > this.maxTryNum){
+          this.userTryNum = 1;
+        }
       }
 
       //결과보기 버튼
@@ -152,28 +150,28 @@ const AraQuiz={
       this.wrap.style.display="none"
     }
 
-    plusResultHTMLtag(){      
-      this.resultQnum = document.querySelector('.q_num'); 
-      let th = document.createElement('th');
-      th.innerHTML = '<div class="num"></div>';
-      this.resultQnum.appendChild(th);
-      
-      this.resultQres = document.querySelector('.q_res');
-      let td = document.createElement('td');
-      td.innerHTML = '<div class="res"><button class="retry" title="틀린문제 풀기"></button></div>';
-      this.resultQres.appendChild(td);
+    resultCheck(){
+      if(this.wrap.classList.contains('true')){
+        console.log('trure')
+        // retryQres[this.nowQnum-1].classList.add('true');
+      }else if(this.wrap.classList.contains('false')){
+        // retryQres[this.nowQnum-1].classList.add('false');
+        console.log('faalseeee')
+      }
     }
 
   },
   ResetQuiz:class{
+    //class가 이와 같은 형태로 선언되었을 때 extends 사용방법 
     constructor(wrap){
       this.wrap = wrap;
 
       this.buttons = this.wrap.querySelectorAll(".select");
       this.confirmBtn = this.wrap.querySelector('.confirm'); 
 
-      //위에 class 내 변수와 중복되는데 그걸 사용할 순 없는가\
       this.retryQres = document.querySelectorAll('.res');
+
+      // super(wrap,buttons,confirmBtn);
 
       this.resetQuizHandler();
     }
@@ -191,11 +189,11 @@ const AraQuiz={
       
       this.confirmBtn.style.display = 'block';
 
-      this.wrap.style.display="none"
+      this.wrap.style.display="none";
       this.wrap.classList.remove('true');
       this.wrap.classList.remove('false');
       this.wrap.classList.remove('finished');
-      
+
     }
   }
 }
