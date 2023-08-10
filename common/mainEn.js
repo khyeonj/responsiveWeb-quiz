@@ -13,30 +13,25 @@ const ResultControl={
 
     td.querySelector("button").addEventListener("click", function(){
       let num = parseInt(this.getAttribute("index"), 10);
-      console.log(this);
+      console.log(MainQEn.quizs[num]);
+      MainQEn.moveQuizAndReset(num);
 
-      for(i = 0; i<nowQnum; ++i){
-        if(i == num){
-
-        }else{
-
-        }
-      }
     });
   },
+  //표 정오체크
   quizResultCheck(){
-    MainQEn.quizs.forEach(q=>{  
-      console.log(q)
+    let retryQres = document.querySelectorAll('.res');
+    MainQEn.quizs.forEach((q,i)=>{  
+      console.log(retryQres[i]);
       // 퀴즈가 true를 가지고 있다면
-      if(q.classList.contains('true')){
-        // retryQres[MainQEn.nowQnum-1].classList.add('true');
-        console.log('trure')
-      }else if(q.classList.contains('false')){
-        // retryQres[MainQEn.nowQnum-1].classList.add('false');
-        console.log('falseeee')
+      if(q.quizElement.classList.contains('true')){
+        retryQres[i].classList.add('true');
+      }else if(q.quizElement.classList.contains('false')){
+        retryQres[i].classList.add('false');
       }
     })
   }
+
 }
 
 const MainQEn={
@@ -75,12 +70,16 @@ const MainQEn={
     });
 
     //result 
+    let totalQnum = document.querySelector(".totalQnum");
+    let scoreNum = document.querySelector(".scoreNum");
+    
     resultBtn.forEach(r=>{  
       ResultControl.plusResultHTMLtag();
       r.addEventListener("click", function () {
         //result버튼 클릭시 result페이지 
-        //함수 호출
         ResultControl.quizResultCheck();
+        totalQnum.innerHTML = MainQEn.nowQnum;
+        scoreNum.innerHTML = document.querySelectorAll(".quiz.true").length;
         quizPage.style.display = "none";
         resultPage.style.display = "block";
       });
@@ -92,14 +91,10 @@ const MainQEn={
       resultPage.style.display = "none";
       //quiz.finished 제거
       main.classList.remove('finished');
+      this.allQuizAndReset();
       this.nowQnum = 1;
-      quizDoms.forEach((a,i)=>{
-        console.log(a);
-        let rQuiz = new AraQuiz.ResetQuiz(a);
-      });
       quizDoms[0].style.display="block"
     });
-
 
     //총 문제 수(문제에 번호를 매겨서 알아서 총 갯수와 비교할 수 있도록)
     // let totalQnum = document.querySelector(".totalQnum");
@@ -107,15 +102,29 @@ const MainQEn={
     // 맞춘 문제 수 (true 갯수 체크해서 띄우기)
   },
   NextQuiz(){
-    console.log(this.nowQnum);
     this.quizs[this.nowQnum-1].hide();
-
     this.nowQnum++;
-    console.log("nextQuiz")
     this.quizs[this.nowQnum-1].show();
   },
-  resultTablePlus(){    
-    
+  moveQuizAndReset(num){    
+    for (let idx = 0; idx < this.nowQnum; idx++) {
+      this.quizs[idx].hide();
+    }
+
+    this.quizs[num].show();
+    this.quizs[num].reset();
+
+    let quizPage = document.querySelector("section[data-page='quiz']");
+    let resultPage = document.querySelector("section[data-page='result']");    
+
+    quizPage.style.display = "block";
+    resultPage.style.display = "none";    
+  }, 
+  allQuizAndReset(){    
+    for (let idx = 0; idx < this.nowQnum; idx++) {
+      this.quizs[idx].hide();
+      this.quizs[idx].reset();
+    }
   }
 }
 

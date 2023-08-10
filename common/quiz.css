@@ -407,7 +407,8 @@ header {
   }
 
   .quiz ul.selection.ox li button:hover,
-  .quiz .selection.ox button.checked {
+  .quiz .selection.ox button.checked,
+  .quiz.false .checked button{
     background-position-y: -211px;
   }
 
@@ -697,7 +698,7 @@ header {
     letter-spacing: -1.5px;
   }
 
-  section[data-page="result"] .score .score_num {
+  section[data-page="result"] .score .scoreNum {
     position: relative;
     left: 4px;
     color: #e14e4e;

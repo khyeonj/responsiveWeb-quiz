@@ -45,7 +45,6 @@ const AraQuiz={
       this.nextBtn.addEventListener("click",()=>{
         //nextBtn 클릭 시 핸들러 발생 전 할 행동이 있을 경우 함수로 호출 후 행동코드 입력
         this.nextHandler();
-        // this.resultCheck();
       });
       
     }
@@ -82,13 +81,12 @@ const AraQuiz={
           this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
         }else if(this.choice !== this.answer){//정답 틀렸을 때-------------
           this.checkedAns.classList.remove('checked');
-          console.log(this.userTryNum);
-          console.log(this.maxTryNum);
           if(this.userTryNum == this.maxTryNum){
             //사용자 시도횟수 없는 경우
             this.quizElement.classList.add('false');
             this.quizElement.classList.add('finished');
             this.confirmBtn.style.display = 'none';
+            this.checkedAns.classList.add('checked');
             //정답에 true 추가
             this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
           }
@@ -105,7 +103,8 @@ const AraQuiz={
     }
 
     inputConfirmQuiz(){
-      this.writeAns = this.wrap.querySelector(`input`).value;
+      this.input = this.wrap.querySelector(`input`);
+      this.writeAns = this.input.value;
       console.log('작성한 정답 : '+this.writeAns);
      
       if(this.writeAns == ""){//정답 입력하지 않았을 때-------------
@@ -117,16 +116,19 @@ const AraQuiz={
         this.quizElement.classList.add('true');
         this.quizElement.classList.add('finished');
         this.confirmBtn.style.display = 'none';
+        this.input.classList.add('true');
+        this.input.setAttribute("disabled", true);
       }else if(this.writeAns !== this.answer){//정답 틀렸을 때-------------
         console.log('답 틀림');
-        this.wrap.querySelector(`input`).value="";
-        console.log(this.userTryNum);
-        console.log(this.maxTryNum);
+        this.input.value="";
         if(this.userTryNum == this.maxTryNum){
           //사용자 시도횟수 없는 경우
           this.quizElement.classList.add('false');
           this.quizElement.classList.add('finished');
           this.confirmBtn.style.display = 'none';
+          //오답시 value 남아있게 추가
+          this.input.classList.add('false');
+          this.input.setAttribute("disabled", true);
         }
         this.userTryNum++;
         if(this.userTryNum > this.maxTryNum){
@@ -150,51 +152,25 @@ const AraQuiz={
       this.wrap.style.display="none"
     }
 
-    resultCheck(){
-      if(this.wrap.classList.contains('true')){
-        console.log('trure')
-        // retryQres[this.nowQnum-1].classList.add('true');
-      }else if(this.wrap.classList.contains('false')){
-        // retryQres[this.nowQnum-1].classList.add('false');
-        console.log('faalseeee')
-      }
-    }
-
-  },
-  ResetQuiz:class{
-    //class가 이와 같은 형태로 선언되었을 때 extends 사용방법 
-    constructor(wrap){
-      this.wrap = wrap;
-
-      this.buttons = this.wrap.querySelectorAll(".select");
-      this.confirmBtn = this.wrap.querySelector('.confirm'); 
-
-      this.retryQres = document.querySelectorAll('.res');
-
-      // super(wrap,buttons,confirmBtn);
-
-      this.resetQuizHandler();
-    }
-
-    resetQuizHandler(){
+    reset(){
       this.buttons.forEach(b=>{
         b.classList.remove('checked');
         b.classList.remove('true');
       })
-
-      this.retryQres.forEach(r=>{
-        r.classList.remove('true');
-        r.classList.remove('false');
-      })
       
       this.confirmBtn.style.display = 'block';
 
-      this.wrap.style.display="none";
       this.wrap.classList.remove('true');
       this.wrap.classList.remove('false');
       this.wrap.classList.remove('finished');
 
+      this.retryQres = document.querySelectorAll('.res');
+      this.retryQres[this.qnum-1].classList.remove('true');
+      this.retryQres[this.qnum-1].classList.remove('false');
     }
+
+    //input 정답 시 다시풀기 했을 때 value 값 리셋
+
   }
 }
 
