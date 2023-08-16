@@ -57,76 +57,170 @@ const AraQuiz={
       })
     }
 
+    // 모달 요소 생성 함수
+    createModal() {
+      let modalElement = document.createElement('div');
+      modalElement.className = 'modal modal-content';
+      modalElement.innerHTML = 
+      `<img id="modal-image">
+      <audio id="modal-audio" controls style="display: none;"></audio>`;
+      
+      return modalElement;
+    }
+
+    // 모달 이미지를 표시하는 함수
+    displayModalContent(modalElement, imgSrc, audioSrc) {
+        let modalImg = modalElement.querySelector('#modal-image');
+        let modalAudio = modalElement.querySelector('#modal-audio');
+    
+        modalImg.src = imgSrc;
+        modalAudio.src = audioSrc;
+        modalAudio.play();
+    
+        let transformModal = (scale, opacity, duration) => {
+            modalImg.style.transition = `opacity ${duration}s ease-in-out, transform ${duration}s ease-in-out`;
+            modalImg.style.transform = `translate(0%, 0%) scale(${scale})`;
+            modalImg.style.opacity = opacity;
+        };
+    
+        transformModal(0.5, 0, 0.5);
+    
+        setTimeout(() => transformModal(1, 1, 0.3), 100);
+    
+        setTimeout(() => {
+            transformModal(0.5, 0, 0.3);
+            setTimeout(() => modalImg.style.display = 'none', 500);
+        }, 1000);
+    }
+    
+    showModalAnimation(imgSrc, audioSrc) {
+        let modalElement = this.createModal();
+        this.quizElement.appendChild(modalElement);
+        this.displayModalContent(modalElement, imgSrc, audioSrc);
+    }
+
     //confirmBtn 버튼 클릭 시
     choiceConfirmQuiz(){
       this.checkedAns = this.wrap.querySelector('.checked')
-        console.log(this.checkedAns);
-  
-        //정답 선택하지 않았을 때
-        if(!this.checkedAns){
-          // return;
-          //모달창 및 오디오 필요
-          console.log('noooo');
+      console.log(this.checkedAns);
+
+      const modalImgs = [
+        {
+            imgSrc: './common/img/alert_blank.png',
+            audioSrc: './mp3/alert_blank.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_true.png',
+            audioSrc: './mp3/alert_true.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_false.png',
+            audioSrc: './mp3/alert_false.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_retry.png',
+            audioSrc: './mp3/alert_retry.mp3'
         }
+      ];
   
-        this.choice = this.checkedAns.dataset.choice;
-        console.log('선택한 정답 : '+this.choice);
-  
-        if(this.choice == this.answer){//정답일때-------------
-          this.quizElement.classList.remove('false');
-          this.quizElement.classList.add('true');
-          this.quizElement.classList.add('finished');
-          this.confirmBtn.style.display = 'none';
+      //정답 선택하지 않았을 때
+      if(!this.checkedAns){
+        // return;
+        //모달창 및 오디오 필요
+        this.showModalAnimation(modalImgs[0].imgSrc, modalImgs[0].audioSrc);
+        console.log('noooo');
+      }
+
+      this.choice = this.checkedAns.dataset.choice;
+      console.log('선택한 정답 : '+this.choice);
+
+      if(this.choice == this.answer){//정답일때-------------
+        this.answerTrue();
+        this.showModalAnimation(modalImgs[1].imgSrc, modalImgs[1].audioSrc);
+
+        //정답에 true 추가
+        this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
+      }else if(this.choice !== this.answer){//정답 틀렸을 때-------------
+        this.checkedAns.classList.remove('checked');
+
+        let modalElement = this.createModal();
+        this.quizElement.appendChild(modalElement);
+        
+        let retryImg = this.userTryNum < this.maxTryNum ? 3 : 2;
+        this.showModalAnimation(modalImgs[retryImg].imgSrc, modalImgs[retryImg].audioSrc);
+
+        if(this.userTryNum == this.maxTryNum){
+          //사용자 시도횟수 없는 경우
+          this.answerFalse();
+          this.checkedAns.classList.add('checked');
           //정답에 true 추가
           this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
-        }else if(this.choice !== this.answer){//정답 틀렸을 때-------------
-          this.checkedAns.classList.remove('checked');
-          if(this.userTryNum == this.maxTryNum){
-            //사용자 시도횟수 없는 경우
-            this.quizElement.classList.add('false');
-            this.quizElement.classList.add('finished');
-            this.confirmBtn.style.display = 'none';
-            this.checkedAns.classList.add('checked');
-            //정답에 true 추가
-            this.wrap.querySelector(`button[data-choice="${this.answer}"]`).classList.add('true');
-          }
-          this.userTryNum++;
-          if(this.userTryNum > this.maxTryNum){
-            this.userTryNum = 1;
-          }
         }
+        this.userTryNum++;
+        if(this.userTryNum > this.maxTryNum){
+          this.userTryNum = 1;
+        }
+      }
 
-        //결과보기 버튼
-        if(this.qnum == this.totalQnum){ 
-          document.querySelector(".main").classList.add('finished');
-        }
+      //결과보기 버튼
+      if(this.qnum == this.totalQnum){ 
+        document.querySelector(".main").classList.add('finished');
+      }
     }
 
     inputConfirmQuiz(){
       this.input = this.wrap.querySelector(`input`);
       this.writeAns = this.input.value;
       console.log('작성한 정답 : '+this.writeAns);
+
+      const modalImgs = [
+        {
+            imgSrc: './common/img/alert_blank_input.png',
+            audioSrc: './mp3/alert_blank.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_true.png',
+            audioSrc: './mp3/alert_true.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_false.png',
+            audioSrc: './mp3/alert_false.mp3'
+        },
+        {
+            imgSrc: './common/img/alert_retry.png',
+            audioSrc: './mp3/alert_retry.mp3'
+        }
+      ];
      
       if(this.writeAns == ""){//정답 입력하지 않았을 때-------------
         // return;
         //모달창 및 오디오 필요
+        
+        this.showModalAnimation(modalImgs[0].imgSrc, modalImgs[0].audioSrc);
+
         console.log('답 안씀');
       }else if(this.writeAns == this.answer){//정답일때-------------
-        this.quizElement.classList.remove('false');
-        this.quizElement.classList.add('true');
-        this.quizElement.classList.add('finished');
-        this.confirmBtn.style.display = 'none';
+        this.answerTrue();
+
+        this.showModalAnimation(modalImgs[1].imgSrc, modalImgs[1].audioSrc);
+
         this.input.classList.add('true');
         this.input.setAttribute("disabled", true);
       }else if(this.writeAns !== this.answer){//정답 틀렸을 때-------------
         console.log('답 틀림');
         this.input.value="";
+
+        let modalElement = this.createModal();
+        this.quizElement.appendChild(modalElement);
+
+        let retryImg = this.userTryNum < this.maxTryNum ? 3 : 2;
+        this.showModalAnimation(modalImgs[retryImg].imgSrc, modalImgs[retryImg].audioSrc);
+        
         if(this.userTryNum == this.maxTryNum){
           //사용자 시도횟수 없는 경우
-          this.quizElement.classList.add('false');
-          this.quizElement.classList.add('finished');
-          this.confirmBtn.style.display = 'none';
-          //오답시 value 남아있게 추가
+          this.answerFalse();
+          //오답시 value 남아있게 추가 
+          this.input.value = this.writeAns;
           this.input.classList.add('false');
           this.input.setAttribute("disabled", true);
         }
@@ -141,6 +235,19 @@ const AraQuiz={
         document.querySelector(".main").classList.add('finished');
       }
 
+    }
+
+    answerTrue(){
+      this.quizElement.classList.remove('false');
+      this.quizElement.classList.add('true');
+      this.quizElement.classList.add('finished');
+      this.confirmBtn.style.display = 'none';
+    }
+    
+    answerFalse(){
+      this.quizElement.classList.add('false');
+      this.quizElement.classList.add('finished');
+      this.confirmBtn.style.display = 'none';
     }
 
     //next 버튼 클릭 시 
@@ -164,12 +271,17 @@ const AraQuiz={
       this.wrap.classList.remove('false');
       this.wrap.classList.remove('finished');
 
+      if(JSON.parse(this.wrap.dataset.quiz).type=="입력형"){
+        this.input.classList.remove('true');
+        this.input.classList.remove('false');
+        this.input.removeAttribute("disabled");
+        this.input.value="";
+      }
+
       this.retryQres = document.querySelectorAll('.res');
       this.retryQres[this.qnum-1].classList.remove('true');
       this.retryQres[this.qnum-1].classList.remove('false');
     }
-
-    //input 정답 시 다시풀기 했을 때 value 값 리셋
 
   }
 }
